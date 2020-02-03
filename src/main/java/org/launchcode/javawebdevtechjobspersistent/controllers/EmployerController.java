@@ -1,15 +1,15 @@
 package org.launchcode.javawebdevtechjobspersistent.controllers;
 
 import org.launchcode.javawebdevtechjobspersistent.models.Employer;
-import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+        import org.launchcode.javawebdevtechjobspersistent.models.data.EmployerRepository;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.ui.Model;
+        import org.springframework.validation.Errors;
+        import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Optional;
+        import javax.validation.Valid;
+        import java.util.Optional;
 
 @Controller
 @RequestMapping("employers")
@@ -26,12 +26,13 @@ public class EmployerController {
 
     @PostMapping("add")
     public String processAddEmployerForm(@ModelAttribute @Valid Employer newEmployer,
-                                    Errors errors, Model model) {
+                                         Errors errors, Model model) {
 
         if (errors.hasErrors()) {
+            model.addAttribute("location", "errors");
             return "employers/add";
         } else {
-            model.addAttribute("employerLocation", employerRepository.findAll());
+            model.addAttribute("location", employerRepository.findAll());
         }
 
         return "redirect:";
@@ -40,18 +41,15 @@ public class EmployerController {
     @GetMapping("view/{employerId}")
     public String displayViewEmployer(Model model, @PathVariable int employerId) {
 
-        if (employerId == null) {
-            return "redirect:../";
+        Optional <Employer> result = employerRepository.findById(employerId);
+        if (result.isEmpty()) {
+            model.addAttribute("employer", "Invalid Employer ID: " + employerId);
         } else {
-            Optional <Employer> result = employerRepository.findById(employerId);
-            if (result.isEmpty()) {
-                model.addAttribute("employer", "Invalid Employer ID: " + employerId);
-            } else {
-                Employer employer = (Employer) result.get();
-                model.addAttribute("employer", employer);
-            }
-            return "employers/view";
+            Employer employer = (Employer) result.get();
+            model.addAttribute("employer", employer);
         }
+        return "employers/view";
+    }
 
 //        Optional optEmployer = null;
 //        if (optEmployer.isPresent()) {
@@ -62,5 +60,5 @@ public class EmployerController {
 //            return "redirect:../";
 //        }
 
-    }
+//    }
 }
