@@ -14,6 +14,15 @@ skills          varchar(255)
 
 ## Part 2: Test it with SQL
 
+SELECT name FROM techjobs.employer
+WHERE location = "ST. LOUIS CITY";
+
+name
+
 ## Part 3: Test it with SQL
 
+DROP TABLE techjobs.job;
+
 ## Part 4: Test it with SQL
+
+

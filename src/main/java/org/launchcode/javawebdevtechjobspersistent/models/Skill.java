@@ -9,23 +9,22 @@ public class Skill extends AbstractEntity {
 
         @NotBlank(message = "Skill description is required.")
         @Size(min = 2, max = 255, message = "Skill description must be between 2 and 255 characters.")
+        private String description;
 
-        private String skillDescription;
-
-        public Skill (String skillDescription) {
-            this.skillDescription = skillDescription;
+        public Skill (String description) {
+            this.description = description;
         }
 
         public Skill () {
 
         }
 
-    public String getSkillDescription() {
-        return skillDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSkillDescription(String skillDescription) {
-        this.skillDescription = skillDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
