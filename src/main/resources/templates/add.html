@@ -21,6 +21,7 @@
                     th:text="${employer.name}"
                     th:value="${employer.id}"></option>
         </select>
+        <h3 th:unless="${employer.name != null}" class="error">Employer Name Is Required</h3>
         <a th:href="@{'/employers/add'}">Add Employers</a>
     </div>
 
@@ -28,8 +29,9 @@
         <label th:for="skills">Skills</label>
         <th:block th:each="skill : ${skills}">
             <input type="checkbox" name="skills" th:value="${skill.id}">
-            <label th:text="${skill.name}"></label>
+            <label th:text=" ${skill.name} "></label>
         </th:block>
+        <h3 th:unless="${skill.name != null}" class="error">At Least One Skill Is Required To Be Selected</h3>  -->
         <a th:href="@{'/skills/add'}">Add Skills</a>
     </div>
 

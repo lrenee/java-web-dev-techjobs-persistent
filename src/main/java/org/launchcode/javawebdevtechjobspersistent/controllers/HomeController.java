@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,18 +55,26 @@ public class HomeController {
 //   public String processAddJobForm(@ModelAttribute @Valid Job newJob,
 //                                    Errors errors, Model model, @RequestParam int employerId) {
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
+                                    Errors errors, Model model, @RequestParam int employerId,@RequestParam(required = false) List<Integer> skills) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             return "add";
-        } else {
+        } else if (skills == null) {
+            model.addAttribute("employers", employerRepository.findAll());
+            model.addAttribute("skills", skillRepository.findAll());
+                return "add";
+            } else {
             Optional optEmployer = employerRepository.findById(employerId);
             if (optEmployer.isPresent()) {
                 Employer employer = (Employer) optEmployer.get();
                 newJob.setEmployer(employer);
                 List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-                newJob.setSkills(skillObjs);
+//                if (skillObjs.isEmpty()) {
+//                    return "add";
+//                } else {
+                    newJob.setSkills(skillObjs);
+//                }
                 jobRepository.save(newJob);
             } else {
                 return "add";
